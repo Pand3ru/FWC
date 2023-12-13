@@ -18,15 +18,33 @@ func isDigit(in string) bool {
 }
 
 func tokenizer_ParseString(input string) []Token {
-	var ReturnStack []Token
+	var returnStack []Token
 	lastWasOperator := false
+	evenParentheses := 0
+	value := ""
 
 	for i := 0; i < len(input); i++ {
 		lastWasComma := false
 		char := string(input[i])
 
 		switch char {
-		case "+", "-", "*", "/", "mod", "%", "^":
+		case "+", "-", "*", "/", "%", "^":
+
+			if char == "-" {
+				if i+1 < len(input) {
+					nextChar := string(input[i+1])
+					if i != 0 && nextChar != "(" {
+						prevChar := string(input[i-1])
+						if isDigit(nextChar) && !isDigit(prevChar) && prevChar != ")" {
+							value += "-"
+							continue
+						}
+					} else if i == 0 && nextChar != "(" {
+						value += "-"
+						continue
+					}
+				}
+			}
 			if lastWasOperator {
 				fmt.Println("Syntax error! Multiple operators not allowed")
 				return nil
@@ -36,13 +54,17 @@ func tokenizer_ParseString(input string) []Token {
 				Type:  0, // Type 0 for Operator
 				Value: char,
 			}
-			ReturnStack = append(ReturnStack, token)
+			returnStack = append(returnStack, token)
 		case "(", ")":
+			evenParentheses++
 			token := Token{
 				Type:  2, // Type 2 for parentheses
 				Value: char,
 			}
-			ReturnStack = append(ReturnStack, token)
+			if char == ")" {
+				lastWasOperator = false
+			}
+			returnStack = append(returnStack, token)
 		case " ":
 			continue
 		case ",", ".":
@@ -52,7 +74,7 @@ func tokenizer_ParseString(input string) []Token {
 			}
 			lastWasComma = true
 		default:
-			value := char
+			value += char
 			j := i + 1
 			for ; j < len(input); j++ {
 				nextChar := string(input[j])
@@ -69,13 +91,23 @@ func tokenizer_ParseString(input string) []Token {
 				value += nextChar
 			}
 			i = i + len(value) - 1
+			if string(value[0]) == "-" {
+				i--
+			}
 			token := Token{
 				Type:  1, // Type 1 for meth
 				Value: value,
 			}
-			ReturnStack = append(ReturnStack, token)
+			lastWasOperator = false
+			value = ""
+			returnStack = append(returnStack, token)
 		}
 	}
-
-	return ReturnStack
+	k := len(returnStack) - 1
+	v := returnStack[k]
+	if v.Type == 0 || evenParentheses%2 != 0 {
+		fmt.Println("Syntax Error!")
+		return nil
+	}
+	return returnStack
 }
