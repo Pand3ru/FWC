@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"strconv"
 	"strings"
 )
 
@@ -20,10 +19,9 @@ func functions_infix(tokens []Token) Stack {
 
 		switch TokenType {
 		case 0:
-			Operator := tokens[i].Value
 			if len(OperatorStack) > 0 {
 				for j := len(OperatorStack) - 1; j >= 0; j-- {
-					if GetPrecedence(Operator) < GetPrecedence(OperatorStack[j]) {
+					if GetPrecedence(TokenValue) < GetPrecedence(OperatorStack[j]) {
 						v, err := Pop(&OperatorStack)
 						if err != nil {
 							fmt.Println("If that error happens then the Tokenizer is broken. #1")
@@ -32,34 +30,28 @@ func functions_infix(tokens []Token) Stack {
 					}
 				}
 			}
-			Push(&OperatorStack, Operator)
+			Push(&OperatorStack, tokens[i])
 		case 1:
-			value, err := strconv.ParseFloat(TokenValue, 64) // Convert the string to a float64
-			if err != nil {
-				fmt.Println("If that error happens then the Tokenizer is broken. #2")
-				return nil
-			}
-			Push(&OutputStack, value)
+			Push(&OutputStack, tokens[i])
 		case 2:
-			TokenValue := tokens[i].Value
 			if TokenValue == "(" {
 				Push(&OperatorStack, TokenValue)
-			} else if TokenValue == ")" {
-				if len(OperatorStack) > 0 {
-					for j := len(OperatorStack) - 1; j >= 0; j-- {
-						if OperatorStack[j] != "(" {
-							v, err := Pop(&OperatorStack)
-							if err != nil {
-								fmt.Println("If that error happens then the Tokenizer is broken. #3")
-								return nil
-							}
-							Push(&OutputStack, v)
-						} else {
-							Pop(&OperatorStack)
-							break
+			} else if TokenValue == ")" && len(OperatorStack) > 0 {
+
+				for j := len(OperatorStack) - 1; j >= 0; j-- {
+					if OperatorStack[j] != "(" {
+						v, err := Pop(&OperatorStack)
+						if err != nil {
+							fmt.Println("If that error happens then the Tokenizer is broken. #3")
+							return nil
 						}
+						Push(&OutputStack, v)
+					} else {
+						Pop(&OperatorStack)
+						break
 					}
 				}
+
 			}
 		}
 	}

@@ -12,7 +12,15 @@ func main() {
 	in := functions_infix(something)
 
 	for i := 0; i < len(in); i++ {
-		fmt.Printf("%v ", in[i])
+		if token, ok := in[i].(Token); ok {
+			fmt.Printf("%v ", token.Value)
+		} else {
+			// Handle the case where the type assertion fails
+			fmt.Println("Type assertion failed")
+		}
 	}
 	fmt.Println()
+
+	fmt.Println(CalculatePostfix(&in))
+
 }
