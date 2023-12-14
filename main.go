@@ -3,13 +3,13 @@ package main
 import "fmt"
 
 func main() {
-	something := tokenizer_ParseString("-(45*23)+76/32 % 3+-2")
+	something := tokenizer_ParseString("5*5^(2)")
+	in := functions_infix(something)
 
-	for _, v := range something {
+	/*for _, v := range something {
 		fmt.Printf("Type: %v | Value: %v \n", v.Type, v.Value)
 	}
 
-	in := functions_infix(something)
 
 	for i := 0; i < len(in); i++ {
 		if token, ok := in[i].(Token); ok {
@@ -19,8 +19,11 @@ func main() {
 			fmt.Println("Type assertion failed")
 		}
 	}
-	fmt.Println()
-
-	fmt.Println(CalculatePostfix(&in))
+	fmt.Println()*/
+	sol, err := CalculatePostfix(&in)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	fmt.Println(sol)
 
 }

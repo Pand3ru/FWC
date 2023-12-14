@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"math"
 	"strconv"
 )
 
@@ -29,7 +30,7 @@ func CalculatePostfix(s *Stack) (float64, error) {
 			if err != nil {
 				return 0, err
 			}
-			fmt.Printf("\n=====\nTokentype: %v, TokenValue: %v, Operator: %v, Operand1: %v, Operand2: %v, OutputValue: %v \n=====\n", TokenType, slice[i].(Token).Value, Operator, Operand1, Operand2, val)
+			//fmt.Printf("\n=====\nTokentype: %v, TokenValue: %v, Operator: %v, Operand1: %v, Operand2: %v, OutputValue: %v \n=====\n", TokenType, slice[i].(Token).Value, Operator, Operand1, Operand2, val)
 			Push(&OutputStack, Token{Value: fmt.Sprintf("%f", val)})
 		}
 	}
@@ -60,24 +61,20 @@ func Calculate(a string, b Token, c Token) (float64, error) {
 		return A - B, nil
 	case "*":
 		return A * B, nil
+	case "^":
+		return math.Pow(A, B), nil
 	case "/":
 		if B != 0 {
 			return A / B, nil
 		}
 		return 0, errors.New("divide by zero")
 	case "%":
-		Aa, err := strconv.ParseInt(b.Value, 10, 64)
-		if err != nil {
-			return 0, err
-		}
+		Aint := int(A)
 
-		Bb, err := strconv.ParseInt(c.Value, 10, 64)
-		if err != nil {
-			return 0, err
-		}
+		Bint := int(B)
 
-		if Bb != 0 {
-			return float64(Aa % Bb), nil
+		if Bint != 0 {
+			return float64(Aint % Bint), nil
 		}
 		return 0, errors.New("divide by zero")
 	default:
