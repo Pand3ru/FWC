@@ -7,14 +7,14 @@ import (
 )
 
 type Token struct {
-	Type  int8 // 0: Operator (+,-) 1: Operand (1,2) 2: ()
+	Type  int8 // 0: Operator (+,-) 1: Operand (1,2) 2: () 3: f(x) 4: Variable
 	Value string
 }
 
 // Tries to convert string into digit
 func isDigit(in string) bool {
 	_, err := strconv.Atoi(in)
-	return err == nil
+	return err == nil || (in >= "a" && in <= "z")
 }
 
 // Function that tokenizes a string.
@@ -91,8 +91,19 @@ func tokenizer_ParseString(input string) []Token {
 				return nil
 			}
 			lastWasComma = true
-		default:
+		default:	
 			value += char
+			if char >= "a" && char <="z" {
+				fmt.Printf("value: %v, char %v\n", char, value)
+				token := Token{
+					Type: 4,
+					Value: value,
+				}
+				returnStack = append(returnStack, token)
+				value = ""
+				lastWasOperator = false
+				break
+			}
 			j := i + 1
 			for ; j < len(input); j++ {
 				nextChar := string(input[j])

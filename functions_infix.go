@@ -31,7 +31,7 @@ func functions_infix(tokens []Token) Stack {
 				}
 			}
 			Push(&OperatorStack, tokens[i])
-		case 1:
+		case 1, 4:
 			Push(&OutputStack, tokens[i])
 		case 2:
 			if TokenValue == "(" {

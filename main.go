@@ -3,10 +3,10 @@ package main
 import "fmt"
 
 func main() {
-	something := tokenizer_ParseString("5*5^(2)")
+	something := tokenizer_ParseString("-x^2+x+1")
 	in := functions_infix(something)
 
-	/*for _, v := range something {
+	for _, v := range something {
 		fmt.Printf("Type: %v | Value: %v \n", v.Type, v.Value)
 	}
 
@@ -19,11 +19,11 @@ func main() {
 			fmt.Println("Type assertion failed")
 		}
 	}
-	fmt.Println()*/
-	sol, err := CalculatePostfix(&in)
-	if err != nil {
-		fmt.Println(err.Error())
-	}
-	fmt.Println(sol)
+	fmt.Println()
+//	sol, err := CalculatePostfix(&in)
+//	if err != nil {
+//		fmt.Println(err.Error())
+//	}
+//	fmt.Println(sol)
 
 }
