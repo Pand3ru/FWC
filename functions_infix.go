@@ -19,15 +19,18 @@ func functions_infix(tokens []Token) Stack {
 
 		switch TokenType {
 		case 0:
-			if len(OperatorStack) > 0 {
-				for j := len(OperatorStack) - 1; j >= 0; j-- {
-					if GetPrecedence(TokenValue) < GetPrecedence(OperatorStack[j]) {
-						v, err := Pop(&OperatorStack)
-						if err != nil {
-							fmt.Println("If that error happens then the Tokenizer is broken. #1")
-						}
-						Push(&OutputStack, v)
+			// Handling right associativity for '^'
+			for len(OperatorStack) > 0 && OperatorStack[len(OperatorStack)-1] != "(" {
+				topOp := OperatorStack[len(OperatorStack)-1].(Token).Value // Assuming the OperatorStack stores Tokens
+				if GetPrecedence(TokenValue) < GetPrecedence(topOp) || (TokenValue != "^" && GetPrecedence(TokenValue) == GetPrecedence(topOp)) {
+					v, err := Pop(&OperatorStack)
+					if err != nil {
+						fmt.Println("Error in pop operation.")
+						return nil
 					}
+					Push(&OutputStack, v)
+				} else {
+					break
 				}
 			}
 			Push(&OperatorStack, tokens[i])

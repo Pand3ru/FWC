@@ -91,19 +91,8 @@ func tokenizer_ParseString(input string) []Token {
 				return nil
 			}
 			lastWasComma = true
-		default:	
+		default:
 			value += char
-			if char >= "a" && char <="z" {
-				fmt.Printf("value: %v, char %v\n", char, value)
-				token := Token{
-					Type: 4,
-					Value: value,
-				}
-				returnStack = append(returnStack, token)
-				value = ""
-				lastWasOperator = false
-				break
-			}
 			j := i + 1
 			for ; j < len(input); j++ {
 				nextChar := string(input[j])

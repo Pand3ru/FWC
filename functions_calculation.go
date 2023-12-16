@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math"
 	"strconv"
+	"strings"
 )
 
 func CalculatePostfix(s *Stack) (float64, error) {
@@ -80,4 +81,10 @@ func Calculate(a string, b Token, c Token) (float64, error) {
 	default:
 		return 0, errors.New("invalid operator")
 	}
+}
+
+func ReplaceAndTokenize(input string, value int) Stack {
+	input = strings.Replace(input, "x", fmt.Sprint(value), -1)
+	tokens := tokenizer_ParseString(input)
+	return functions_infix(tokens)
 }
