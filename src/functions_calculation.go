@@ -15,9 +15,9 @@ func CalculatePostfix(s *Stack) (float64, error) {
 	for i := 0; i < len(slice); i++ {
 		TokenType := slice[i].(Token).Type
 		switch TokenType {
-		case 1: // Assuming 1 represents operand
+		case 1: // Operands
 			Push(&OutputStack, slice[i])
-		case 0: // Assuming 0 represents operator
+		case 0: // Operator
 			Operator := slice[i].(Token).Value
 			Operand2, err := Pop(&OutputStack)
 			if err != nil {
@@ -31,7 +31,6 @@ func CalculatePostfix(s *Stack) (float64, error) {
 			if err != nil {
 				return 0, err
 			}
-			//fmt.Printf("\n=====\nTokentype: %v, TokenValue: %v, Operator: %v, Operand1: %v, Operand2: %v, OutputValue: %v \n=====\n", TokenType, slice[i].(Token).Value, Operator, Operand1, Operand2, val)
 			Push(&OutputStack, Token{Value: fmt.Sprintf("%f", val)})
 		}
 	}

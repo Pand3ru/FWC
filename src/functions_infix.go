@@ -62,7 +62,7 @@ func functions_infix(tokens []Token) Stack {
 		for i := len(OperatorStack) - 1; i >= 0; i-- {
 			v, err := Pop(&OperatorStack)
 			if err != nil {
-				fmt.Println("If that error happens then the Tokenizer is broken. #4")
+				fmt.Println("Tokenizer Broken. Please write an Issue")
 				return nil
 			}
 			Push(&OutputStack, v)
