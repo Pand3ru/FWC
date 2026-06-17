@@ -4,7 +4,7 @@ FWC, or Fucking Working Calculator, is a robust calculator designed to handle co
 
 ## Project Status
 
-This project is currently in development and not yet hosted. The core functionality, which includes a custom interpreter for function terms, is implemented in Go. We aim to further enhance its capabilities by implementing improvement algorithms when time permits. Despite the recent inactivity in commits, the project is actively maintained and is not abandoned.
+This project is currently abondend. The core functionality, which includes a custom interpreter for function terms, is implemented in Go. We aim to further enhance its capabilities by implementing improvement algorithms when time permits. Despite the recent inactivity in commits, the project is actively maintained and is not abandoned.
 
 ## Features
 
